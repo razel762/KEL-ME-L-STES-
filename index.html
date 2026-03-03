@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelime Projesi</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #333; }
+        .list-container { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 5px; }
+        .word-item { 
+            background: white; padding: 15px; border: 1px solid #ddd; border-radius: 5px;
+            cursor: pointer; font-size: 18px; display: flex; justify-content: space-between; align-items: center;
+            transition: background 0.2s;
+        }
+        .word-item:hover { background: #e0f7fa; }
+        .word-item::after { content: "›"; font-size: 24px; color: #aaa; }
+        .speaker-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            margin-right: 15px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: center;
+            display: inline-block;
+        }
+        .speaker-btn:hover { background: #2980b9; }
+        #page-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: white; z-index: 1000; overflow-y: auto;
+        }
+        .page-content { padding: 40px; text-align: center; }
+        .back-btn { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; float: left; }
+        .image-placeholder { width: 100%; max-width: 400px; height: 300px; background: #eee; margin: 20px auto; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .play-btn { background: #27ae60; color: white; border: none; padding: 20px 40px; border-radius: 50px; font-size: 20px; cursor: pointer; width: 100%; max-width: 300px; }
+    </style>
+</head>
+<body>
+
+    <h1>İngilizce Kelime Listesi</h1>
+    <div class="list-container" id="list"></div>
+
+    <div id="page-overlay">
+        <div class="page-content">
+            <button class="back-btn" onclick="closePage()">⬅ Geri Dön</button>
+            <h1 id="selectedWord" style="margin-top: 60px; text-transform: capitalize;">Kelime</h1>
+            <div class="image-placeholder" id="imageBox"></div>
+            <button class="play-btn" onclick="playSound()">▶ ŞARKIYI OYNAT</button>
+        </div>
+    </div>
+
+    <script>
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        const words = ["time", "year", "people", "way", "day", "man", "thing", "woman", "life", "child", "world", "school", "state", "family", "student", "group", "country", "problem", "hand", "part", "place", "case", "week", "company", "system", "word", "work", "use", "make", "take", "give", "come", "look", "want", "find", "tell", "ask", "try", "need", "feel", "become", "leave", "call", "keep", "start", "seem", "help", "talk", "turn", "begin", "show", "good", "new", "first", "last", "long", "great", "little", "own", "other", "old", "right", "big", "high", "different", "small", "large", "next", "early", "young", "important", "few", "public", "bad", "same", "able", "very", "often", "really", "quickly", "slowly", "well", "always", "sometimes", "usually", "together", "already", "almost", "especially", "probably", "finally", "easily", "recently", "immediately", "nearly", "currently", "clearly", "simply", "exactly", "strongly"];
+
+        const listDiv = document.getElementById('list');
+        
+        words.forEach((w, index) => {
+            let div = document.createElement('div');
+            div.className = 'word-item';
+            div.innerHTML = `<span><button class="speaker-btn" onclick="event.stopPropagation(); speak('${w}')">🔊</button>${index + 1}. ${w}</span>`;
+            div.onclick = () => openPage(w);
+            listDiv.appendChild(div);
+        });
+
+        function openPage(word) {
+            document.getElementById('selectedWord').innerText = word;
+            document.getElementById('page-overlay').style.display = 'block';
+            speak(word);
+            document.getElementById('imageBox').innerHTML = `<img src="https://source.unsplash.com/400x300/?${word}" style="width:100%; border-radius:10px;" alt="${word}">`;
+        }
+
+        function closePage() {
+            document.getElementById('page-overlay').style.display = 'none';
+        }
+        
+        function playSound() {
+            alert("Şarkı çalma fonksiyonu aktif.");
+        }
+    </script>
+</body>
+</html>
