@@ -38,6 +38,7 @@
         .back-btn { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; float: left; }
         .image-placeholder { width: 100%; max-width: 400px; height: 300px; background: #eee; margin: 20px auto; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
         .play-btn { background: #27ae60; color: white; border: none; padding: 20px 40px; border-radius: 50px; font-size: 20px; cursor: pointer; width: 100%; max-width: 300px; }
+        .tr-word { color: #7f8c8d; font-size: 14px; margin-left: 10px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -61,15 +62,36 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        const words = ["time", "year", "people", "way", "day", "man", "thing", "woman", "life", "child", "world", "school", "state", "family", "student", "group", "country", "problem", "hand", "part", "place", "case", "week", "company", "system", "word", "work", "use", "make", "take", "give", "come", "look", "want", "find", "tell", "ask", "try", "need", "feel", "become", "leave", "call", "keep", "start", "seem", "help", "talk", "turn", "begin", "show", "good", "new", "first", "last", "long", "great", "little", "own", "other", "old", "right", "big", "high", "different", "small", "large", "next", "early", "young", "important", "few", "public", "bad", "same", "able", "very", "often", "really", "quickly", "slowly", "well", "always", "sometimes", "usually", "together", "already", "almost", "especially", "probably", "finally", "easily", "recently", "immediately", "nearly", "currently", "clearly", "simply", "exactly", "strongly"];
+        const wordData = [
+            {en:"time", tr:"zaman"}, {en:"year", tr:"yıl"}, {en:"people", tr:"insanlar"}, {en:"way", tr:"yol/yöntem"}, {en:"day", tr:"gün"}, 
+            {en:"man", tr:"adam"}, {en:"thing", tr:"şey"}, {en:"woman", tr:"kadın"}, {en:"life", tr:"hayat"}, {en:"child", tr:"çocuk"}, 
+            {en:"world", tr:"dünya"}, {en:"school", tr:"okul"}, {en:"state", tr:"durum/eyalet"}, {en:"family", tr:"aile"}, {en:"student", tr:"öğrenci"}, 
+            {en:"group", tr:"grup"}, {en:"country", tr:"ülke"}, {en:"problem", tr:"sorun"}, {en:"hand", tr:"el"}, {en:"part", tr:"parça"}, 
+            {en:"place", tr:"yer"}, {en:"case", tr:"durum/vaka"}, {en:"week", tr:"hafta"}, {en:"company", tr:"şirket"}, {en:"system", tr:"sistem"}, 
+            {en:"word", tr:"kelime"}, {en:"work", tr:"iş/çalışmak"}, {en:"use", tr:"kullanmak"}, {en:"make", tr:"yapmak"}, {en:"take", tr:"almak"}, 
+            {en:"give", tr:"vermek"}, {en:"come", tr:"gelmek"}, {en:"look", tr:"bakmak"}, {en:"want", tr:"istemek"}, {en:"find", tr:"bulmak"}, 
+            {en:"tell", tr:"anlatmak"}, {en:"ask", tr:"sormak"}, {en:"try", tr:"denemek"}, {en:"need", tr:"ihtiyaç duymak"}, {en:"feel", tr:"hissetmek"}, 
+            {en:"become", tr:"olmak"}, {en:"leave", tr:"ayrılmak"}, {en:"call", tr:"aramak/çağırmak"}, {en:"keep", tr:"tutmak/saklamak"}, {en:"start", tr:"başlamak"}, 
+            {en:"seem", tr:"görünmek"}, {en:"help", tr:"yardım etmek"}, {en:"talk", tr:"konuşmak"}, {en:"turn", tr:"dönmek"}, {en:"begin", tr:"başlamak"}, 
+            {en:"show", tr:"göstermek"}, {en:"good", tr:"iyi"}, {en:"new", tr:"yeni"}, {en:"first", tr:"birinci"}, {en:"last", tr:"son/geçen"}, 
+            {en:"long", tr:"uzun"}, {en:"great", tr:"harika"}, {en:"little", tr:"küçük/az"}, {en:"own", tr:"kendi"}, {en:"other", tr:"diğer"}, 
+            {en:"old", tr:"eski/yaşlı"}, {en:"right", tr:"doğru/sağ"}, {en:"big", tr:"büyük"}, {en:"high", tr:"yüksek"}, {en:"different", tr:"farklı"}, 
+            {en:"small", tr:"küçük"}, {en:"large", tr:"geniş/büyük"}, {en:"next", tr:"sonraki"}, {en:"early", tr:"erken"}, {en:"young", tr:"genç"}, 
+            {en:"important", tr:"önemli"}, {en:"few", tr:"birkaç"}, {en:"public", tr:"halka açık/kamu"}, {en:"bad", tr:"kötü"}, {en:"same", tr:"aynı"}, 
+            {en:"able", tr:"yapabilen"}, {en:"very", tr:"çok"}, {en:"often", tr:"sık sık"}, {en:"really", tr:"gerçekten"}, {en:"quickly", tr:"hızlıca"}, 
+            {en:"slowly", tr:"yavaşça"}, {en:"well", tr:"iyi"}, {en:"always", tr:"her zaman"}, {en:"sometimes", tr:"bazen"}, {en:"usually", tr:"genellikle"}, 
+            {en:"together", tr:"birlikte"}, {en:"already", tr:"zaten/çoktan"}, {en:"almost", tr:"neredeyse"}, {en:"especially", tr:"özellikle"}, {en:"probably", tr:"muhtemelen"}, 
+            {en:"finally", tr:"sonunda"}, {en:"easily", tr:"kolayca"}, {en:"recently", tr:"son zamanlarda"}, {en:"immediately", tr:"hemen"}, {en:"nearly", tr:"neredeyse"}, 
+            {en:"currently", tr:"şu anda"}, {en:"clearly", tr:"açıkça"}, {en:"simply", tr:"basitçe"}, {en:"exactly", tr:"kesinlikle"}, {en:"strongly", tr:"güçlü bir şekilde"}
+        ];
 
         const listDiv = document.getElementById('list');
         
-        words.forEach((w, index) => {
+        wordData.forEach((item, index) => {
             let div = document.createElement('div');
             div.className = 'word-item';
-            div.innerHTML = `<span><button class="speaker-btn" onclick="event.stopPropagation(); speak('${w}')">🔊</button>${index + 1}. ${w}</span>`;
-            div.onclick = () => openPage(w);
+            div.innerHTML = `<span><button class="speaker-btn" onclick="event.stopPropagation(); speak('${item.en}')">🔊</button>${index + 1}. ${item.en} <span class="tr-word">(${item.tr})</span></span>`;
+            div.onclick = () => openPage(item.en);
             listDiv.appendChild(div);
         });
 
