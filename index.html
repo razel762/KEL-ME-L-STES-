@@ -16,18 +16,9 @@
         .word-item:hover { background: #e0f7fa; }
         .word-item::after { content: "›"; font-size: 24px; color: #aaa; }
         .speaker-btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            margin-right: 15px;
-            cursor: pointer;
-            font-size: 14px;
-            line-height: 30px;
-            text-align: center;
-            display: inline-block;
+            background: #3498db; color: white; border: none; border-radius: 50%;
+            width: 30px; height: 30px; margin-right: 15px; cursor: pointer;
+            font-size: 14px; line-height: 30px; text-align: center; display: inline-block;
         }
         .speaker-btn:hover { background: #2980b9; }
         #page-overlay { 
@@ -36,7 +27,11 @@
         }
         .page-content { padding: 40px; text-align: center; }
         .back-btn { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; float: left; }
-        .image-placeholder { width: 100%; max-width: 400px; height: 300px; background: #eee; margin: 20px auto; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .image-placeholder { 
+            width: 100%; max-width: 400px; height: 300px; background: #eee; 
+            margin: 20px auto; border-radius: 10px; display: flex; 
+            align-items: center; justify-content: center; overflow: hidden; 
+        }
         .play-btn { background: #27ae60; color: white; border: none; padding: 20px 40px; border-radius: 50px; font-size: 20px; cursor: pointer; width: 100%; max-width: 300px; }
         .tr-word { color: #7f8c8d; font-size: 14px; margin-left: 10px; font-style: italic; }
     </style>
@@ -63,26 +58,106 @@
         }
 
         const wordData = [
-            {en:"time", tr:"zaman", img:"https://ibb.co/DDL0fKJZ"}, {en:"year", tr:"yıl", img:"https://ibb.co/vvgDdstZ"}, {en:"people", tr:"insanlar", img:"https://ibb.co/Mk76W5Kn"}, {en:"way", tr:"yol/yöntem", img:"https://ibb.co/JjyQrhph"}, {en:"day", tr:"gün"}, 
-            {en:"man", tr:"adam", img:"https://ibb.co/rRbC4tXw"}, {en:"thing", tr:"şey"}, {en:"woman", tr:"kadın", img:"https://ibb.co/cKR7WvXM"}, {en:"life", tr:"hayat"}, {en:"child", tr:"çocuk"}, 
-            {en:"world", tr:"dünya", img:"https://ibb.co/GfskGpR3"}, {en:"school", tr:"okul", img:"https://ibb.co/nqLRdQBD"}, {en:"state", tr:"durum/eyalet"}, {en:"family", tr:"aile", img:"https://ibb.co/8Dn3GCm5"}, {en:"student", tr:"öğrenci"}, 
-            {en:"group", tr:"grup", img:"https://ibb.co/r2XTtNvh"}, {en:"country", tr:"ülke"}, {en:"problem", tr:"sorun"}, {en:"hand", tr:"el", img:"https://ibb.co/B582nBmq"}, {en:"part", tr:"parça", img:"https://ibb.co/S7Q0YvqV"}, 
-            {en:"place", tr:"yer"}, {en:"case", tr:"durum/vaka"}, {en:"week", tr:"hafta", img:"https://ibb.co/dsy1gSPM"}, {en:"company", tr:"şirket"}, {en:"system", tr:"sistem", img:"https://ibb.co/nsv27hVT"}, 
-            {en:"word", tr:"kelime", img:"https://ibb.co/SX9rDWsx"}, {en:"work", tr:"iş/çalışmak", img:"https://ibb.co/5WRhjpXq"}, {en:"use", tr:"kullanmak"}, {en:"make", tr:"yapmak", img:"https://ibb.co/1G20CcKP"}, {en:"take", tr:"almak", img:"https://ibb.co/Z1ML5R8k"}, 
-            {en:"give", tr:"vermek", img:"https://ibb.co/mVmCmGN5"}, {en:"come", tr:"gelmek", img:"https://ibb.co/DHQgNm3j"}, {en:"look", tr:"bakmak", img:"https://ibb.co/n8cHWhqD"}, {en:"want", tr:"istemek", img:"https://ibb.co/6R8GsYbX"}, {en:"find", tr:"bulmak", img:"https://ibb.co/rGkgCQSy"}, 
-            {en:"tell", tr:"anlatmak", img:"https://ibb.co/3yt03fYJ"}, {en:"ask", tr:"sormak", img:"https://ibb.co/QFkkbtP4"}, {en:"try", tr:"denemek"}, {en:"need", tr:"ihtiyaç duymak"}, {en:"feel", tr:"hissetmek", img:"https://ibb.co/qY8jhhNr"}, 
-            {en:"become", tr:"olmak"}, {en:"leave", tr:"ayrılmak"}, {en:"call", tr:"aramak/çağırmak", img:"https://ibb.co/7xMzLG7W"}, {en:"keep", tr:"tutmak/saklamak"}, {en:"start", tr:"başlamak"}, 
-            {en:"seem", tr:"görünmek"}, {en:"help", tr:"yardım etmek", img:"https://ibb.co/Gf9B3Bmy"}, {en:"talk", tr:"konuşmak", img:"https://ibb.co/qMxdqjmG"}, {en:"turn", tr:"dönmek", img:"https://ibb.co/gMWz81rc"}, {en:"begin", tr:"başlamak"}, 
-            {en:"show", tr:"göstermek"}, {en:"good", tr:"iyi", img:"https://ibb.co/FkFqNTYJ"}, {en:"new", tr:"yeni"}, {en:"first", tr:"birinci", img:"https://ibb.co/fGZDq7Kb"}, {en:"last", tr:"son/geçen", img:"https://ibb.co/jvJFKxgj"}, 
-            {en:"long", tr:"uzun", img:"https://ibb.co/1GfDLn35"}, {en:"great", tr:"harika"}, {en:"little", tr:"küçük/az", img:"https://ibb.co/whyCqj6b"}, {en:"own", tr:"kendi"}, {en:"other", tr:"diğer"}, 
-            {en:"old", tr:"eski/yaşlı", img:"https://ibb.co/dwS1Rx6w"}, {en:"right", tr:"doğru/sağ"}, {en:"big", tr:"büyük"}, {en:"high", tr:"yüksek"}, {en:"different", tr:"farklı"}, 
-            {en:"small", tr:"küçük"}, {en:"large", tr:"geniş/büyük"}, {en:"next", tr:"sonraki"}, {en:"early", tr:"erken"}, {en:"young", tr:"genç"}, 
-            {en:"important", tr:"önemli"}, {en:"few", tr:"birkaç"}, {en:"public", tr:"halka açık/kamu"}, {en:"bad", tr:"kötü"}, {en:"same", tr:"aynı"}, 
-            {en:"able", tr:"yapabilen"}, {en:"very", tr:"çok"}, {en:"often", tr:"sık sık"}, {en:"really", tr:"gerçekten"}, {en:"quickly", tr:"hızlıca"}, 
-            {en:"slowly", tr:"yavaşça"}, {en:"well", tr:"iyi"}, {en:"always", tr:"her zaman"}, {en:"sometimes", tr:"bazen"}, {en:"usually", tr:"genellikle"}, 
-            {en:"together", tr:"birlikte"}, {en:"already", tr:"zaten/çoktan"}, {en:"almost", tr:"neredeyse"}, {en:"especially", tr:"özellikle"}, {en:"probably", tr:"muhtemelen"}, 
-            {en:"finally", tr:"sonunda"}, {en:"easily", tr:"kolayca"}, {en:"recently", tr:"son zamanlarda"}, {en:"immediately", tr:"hemen"}, {en:"nearly", tr:"neredeyse"}, 
-            {en:"currently", tr:"şu anda"}, {en:"clearly", tr:"açıkça"}, {en:"simply", tr:"basitçe"}, {en:"exactly", tr:"kesinlikle"}, {en:"strongly", tr:"güçlü bir şekilde"}
+            {en:"time", tr:"zaman", img:"https://i.ibb.co/FbnR47rF/MG-20260310-WA0034.jpg"},
+            {en:"year", tr:"yıl", img:"https://i.ibb.co/Pz3tWTSw/MG-20260310-WA0035.jpg"},
+            {en:"people", tr:"insanlar", img:"https://i.ibb.co/8g9cT4GM/MG-20260310-WA0036.jpg"},
+            {en:"way", tr:"yol/yöntem", img:"https://i.ibb.co/chCL2m8m/MG-20260310-WA0037.jpg"},
+            {en:"day", tr:"gün", img:""},
+            {en:"man", tr:"adam", img:"https://i.ibb.co/xtmpJsr7/MG-20260310-WA0039.jpg"},
+            {en:"thing", tr:"şey", img:""},
+            {en:"woman", tr:"kadın", img:"https://i.ibb.co/PsJf2Yz3/MG-20260310-WA0041.jpg"},
+            {en:"life", tr:"hayat", img:""},
+            {en:"child", tr:"çocuk", img:""},
+            {en:"world", tr:"dünya", img:"https://i.ibb.co/SDQ0HyB7/MG-20260310-WA0044.jpg"},
+            {en:"school", tr:"okul", img:"https://i.ibb.co/Gf5FYC9V/MG-20260310-WA0045.jpg"},
+            {en:"state", tr:"durum/eyalet", img:""},
+            {en:"family", tr:"aile", img:"https://i.ibb.co/ccK5RByF/MG-20260310-WA0047.jpg"},
+            {en:"student", tr:"öğrenci", img:""},
+            {en:"group", tr:"grup", img:"https://i.ibb.co/v4MgBRDW/MG-20260310-WA0049.jpg"},
+            {en:"country", tr:"ülke", img:""},
+            {en:"problem", tr:"sorun", img:""},
+            {en:"hand", tr:"el", img:"https://i.ibb.co/tTypLDS8/MG-20260310-WA0052.jpg"},
+            {en:"part", tr:"parça", img:"https://i.ibb.co/VpHDnBXM/MG-20260310-WA0053.jpg"},
+            {en:"place", tr:"yer", img:""},
+            {en:"case", tr:"durum/vaka", img:""},
+            {en:"week", tr:"hafta", img:"https://i.ibb.co/bjnqJxsm/MG-20260310-WA0016.jpg"},
+            {en:"company", tr:"şirket", img:""},
+            {en:"system", tr:"sistem", img:"https://i.ibb.co/PZnpcBbR/MG-20260310-WA0018.jpg"},
+            {en:"word", tr:"kelime", img:"https://i.ibb.co/XZv8fN24/MG-20260310-WA0019.jpg"},
+            {en:"work", tr:"iş/çalışmak", img:"https://i.ibb.co/RpDT6rGL/MG-20260310-WA0020.jpg"},
+            {en:"use", tr:"kullanmak", img:""},
+            {en:"make", tr:"yapmak", img:"https://i.ibb.co/m5zRnpt2/MG-20260310-WA0022.jpg"},
+            {en:"take", tr:"almak", img:"https://i.ibb.co/jZr6m9M1/MG-20260310-WA0023.jpg"},
+            {en:"give", tr:"vermek", img:"https://i.ibb.co/cSPcP1Yh/MG-20260310-WA0024.jpg"},
+            {en:"come", tr:"gelmek", img:"https://i.ibb.co/Zpx13vyb/MG-20260310-WA0025.jpg"},
+            {en:"look", tr:"bakmak", img:"https://i.ibb.co/k68RdYVh/MG-20260310-WA0026.jpg"},
+            {en:"want", tr:"istemek", img:"https://i.ibb.co/3yvVh1WR/MG-20260310-WA0027.jpg"},
+            {en:"find", tr:"bulmak", img:"https://i.ibb.co/6RY23yxs/MG-20260310-WA0028.jpg"},
+            {en:"tell", tr:"anlatmak", img:"https://i.ibb.co/Lz4CFQhG/MG-20260310-WA0029.jpg"},
+            {en:"ask", tr:"sormak", img:"https://i.ibb.co/bgFFWDsk/MG-20260310-WA0030.jpg"},
+            {en:"try", tr:"denemek", img:""},
+            {en:"need", tr:"ihtiyaç duymak", img:""},
+            {en:"feel", tr:"hissetmek", img:"https://i.ibb.co/MkHSKKcC/MG-20260310-WA0033.jpg"},
+            {en:"become", tr:"olmak", img:""},
+            {en:"leave", tr:"ayrılmak", img:""},
+            {en:"call", tr:"aramak/çağırmak", img:"https://i.ibb.co/FkZWCBGw/MG-20260310-WA0013.jpg"},
+            {en:"keep", tr:"tutmak/saklamak", img:""},
+            {en:"start", tr:"başlamak", img:""},
+            {en:"seem", tr:"görünmek", img:""},
+            {en:"help", tr:"yardım etmek", img:"https://i.ibb.co/cKwMXMq0/MG-20260310-WA0002.jpg"},
+            {en:"talk", tr:"konuşmak", img:"https://i.ibb.co/275yVhc2/MG-20260310-WA0003.jpg"},
+            {en:"turn", tr:"dönmek", img:""},
+            {en:"begin", tr:"başlamak", img:""},
+            {en:"show", tr:"göstermek", img:""},
+            {en:"good", tr:"iyi", img:"https://i.ibb.co/TDsqp30R/MG-20260310-WA0005.jpg"},
+            {en:"new", tr:"yeni", img:""},
+            {en:"first", tr:"birinci", img:"https://i.ibb.co/jZqJbFxd/MG-20260310-WA0006.jpg"},
+            {en:"last", tr:"son/geçen", img:"https://i.ibb.co/mCN7sY6P/MG-20260310-WA0007.jpg"},
+            {en:"long", tr:"uzun", img:""},
+            {en:"great", tr:"harika", img:""},
+            {en:"little", tr:"küçük/az", img:"https://i.ibb.co/3m1WbQh8/MG-20260310-WA0010.jpg"},
+            {en:"own", tr:"kendi", img:""},
+            {en:"other", tr:"diğer", img:""},
+            {en:"old", tr:"eski/yaşlı", img:"https://i.ibb.co/0Rk8xvZR/MG-20260310-WA0011.jpg"},
+            {en:"right", tr:"doğru/sağ", img:""},
+            {en:"big", tr:"büyük", img:""},
+            {en:"high", tr:"yüksek", img:""},
+            {en:"different", tr:"farklı", img:""},
+            {en:"small", tr:"küçük", img:""},
+            {en:"large", tr:"geniş/büyük", img:""},
+            {en:"next", tr:"sonraki", img:""},
+            {en:"early", tr:"erken", img:""},
+            {en:"young", tr:"genç", img:""},
+            {en:"important", tr:"önemli", img:""},
+            {en:"few", tr:"birkaç", img:""},
+            {en:"public", tr:"halka açık/kamu", img:""},
+            {en:"bad", tr:"kötü", img:""},
+            {en:"same", tr:"aynı", img:""},
+            {en:"able", tr:"yapabilen", img:""},
+            {en:"very", tr:"çok", img:""},
+            {en:"often", tr:"sık sık", img:""},
+            {en:"really", tr:"gerçekten", img:""},
+            {en:"quickly", tr:"hızlıca", img:""},
+            {en:"slowly", tr:"yavaşça", img:""},
+            {en:"well", tr:"iyi", img:""},
+            {en:"always", tr:"her zaman", img:""},
+            {en:"sometimes", tr:"bazen", img:""},
+            {en:"usually", tr:"genellikle", img:""},
+            {en:"together", tr:"birlikte", img:""},
+            {en:"already", tr:"zaten/çoktan", img:""},
+            {en:"almost", tr:"neredeyse", img:""},
+            {en:"especially", tr:"özellikle", img:""},
+            {en:"probably", tr:"muhtemelen", img:""},
+            {en:"finally", tr:"sonunda", img:""},
+            {en:"easily", tr:"kolayca", img:""},
+            {en:"recently", tr:"son zamanlarda", img:""},
+            {en:"immediately", tr:"hemen", img:""},
+            {en:"nearly", tr:"neredeyse", img:""},
+            {en:"currently", tr:"şu anda", img:""},
+            {en:"clearly", tr:"açıkça", img:""},
+            {en:"simply", tr:"basitçe", img:""},
+            {en:"exactly", tr:"kesinlikle", img:""},
+            {en:"strongly", tr:"güçlü bir şekilde", img:""}
         ];
 
         const listDiv = document.getElementById('list');
@@ -101,12 +176,10 @@
             speak(item.en);
             
             const imageBox = document.getElementById('imageBox');
-            if(item.img) {
-                // ibb linkleri doğrudan img src'de çalışmayabilir, sayfa linki oldukları için 
-                // ancak buraya doğrudan resim URL'si gelirse otomatik gösterir.
-                imageBox.innerHTML = `<img src="${item.img}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;" alt="${item.en}">`;
+            if(item.img && item.img !== "") {
+                imageBox.innerHTML = `<img src="${item.img}" style="width:100%; height:100%; object-fit:contain; border-radius:10px;" alt="${item.en}">`;
             } else {
-                imageBox.innerHTML = `<img src="https://source.unsplash.com/400x300/?${item.en}" style="width:100%; border-radius:10px;" alt="${item.en}">`;
+                imageBox.innerHTML = `<img src="https://source.unsplash.com/400x300/?${item.en}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;" alt="${item.en}">`;
             }
         }
 
