@@ -36,7 +36,7 @@
         }
         .page-content { padding: 40px; text-align: center; }
         .back-btn { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; float: left; }
-        .image-placeholder { width: 100%; max-width: 400px; height: 300px; background: #eee; margin: 20px auto; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .image-placeholder { width: 100%; max-width: 400px; height: 300px; background: #eee; margin: 20px auto; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .play-btn { background: #27ae60; color: white; border: none; padding: 20px 40px; border-radius: 50px; font-size: 20px; cursor: pointer; width: 100%; max-width: 300px; }
         .tr-word { color: #7f8c8d; font-size: 14px; margin-left: 10px; font-style: italic; }
     </style>
@@ -48,10 +48,10 @@
 
     <div id="page-overlay">
         <div class="page-content">
-            <button class="back-btn" onclick="closePage()">⬅ BACK</button>
+            <button class="back-btn" onclick="closePage()">⬅ Geri Dön</button>
             <h1 id="selectedWord" style="margin-top: 60px; text-transform: capitalize;">Kelime</h1>
             <div class="image-placeholder" id="imageBox"></div>
-            <button class="play-btn" onclick="playSound()">▶ PLAY</button>
+            <button class="play-btn" onclick="playSound()">▶ ŞARKIYI OYNAT</button>
         </div>
     </div>
 
@@ -63,19 +63,19 @@
         }
 
         const wordData = [
-            {en:"time", tr:"zaman"}, {en:"year", tr:"yıl"}, {en:"people", tr:"insanlar"}, {en:"way", tr:"yol/yöntem"}, {en:"day", tr:"gün"}, 
-            {en:"man", tr:"adam"}, {en:"thing", tr:"şey"}, {en:"woman", tr:"kadın"}, {en:"life", tr:"hayat"}, {en:"child", tr:"çocuk"}, 
-            {en:"world", tr:"dünya"}, {en:"school", tr:"okul"}, {en:"state", tr:"durum/eyalet"}, {en:"family", tr:"aile"}, {en:"student", tr:"öğrenci"}, 
-            {en:"group", tr:"grup"}, {en:"country", tr:"ülke"}, {en:"problem", tr:"sorun"}, {en:"hand", tr:"el"}, {en:"part", tr:"parça"}, 
-            {en:"place", tr:"yer"}, {en:"case", tr:"durum/vaka"}, {en:"week", tr:"hafta"}, {en:"company", tr:"şirket"}, {en:"system", tr:"sistem"}, 
-            {en:"word", tr:"kelime"}, {en:"work", tr:"iş/çalışmak"}, {en:"use", tr:"kullanmak"}, {en:"make", tr:"yapmak"}, {en:"take", tr:"almak"}, 
-            {en:"give", tr:"vermek"}, {en:"come", tr:"gelmek"}, {en:"look", tr:"bakmak"}, {en:"want", tr:"istemek"}, {en:"find", tr:"bulmak"}, 
-            {en:"tell", tr:"anlatmak"}, {en:"ask", tr:"sormak"}, {en:"try", tr:"denemek"}, {en:"need", tr:"ihtiyaç duymak"}, {en:"feel", tr:"hissetmek"}, 
-            {en:"become", tr:"olmak"}, {en:"leave", tr:"ayrılmak"}, {en:"call", tr:"aramak/çağırmak"}, {en:"keep", tr:"tutmak/saklamak"}, {en:"start", tr:"başlamak"}, 
-            {en:"seem", tr:"görünmek"}, {en:"help", tr:"yardım etmek"}, {en:"talk", tr:"konuşmak"}, {en:"turn", tr:"dönmek"}, {en:"begin", tr:"başlamak"}, 
-            {en:"show", tr:"göstermek"}, {en:"good", tr:"iyi"}, {en:"new", tr:"yeni"}, {en:"first", tr:"birinci"}, {en:"last", tr:"son/geçen"}, 
-            {en:"long", tr:"uzun"}, {en:"great", tr:"harika"}, {en:"little", tr:"küçük/az"}, {en:"own", tr:"kendi"}, {en:"other", tr:"diğer"}, 
-            {en:"old", tr:"eski/yaşlı"}, {en:"right", tr:"doğru/sağ"}, {en:"big", tr:"büyük"}, {en:"high", tr:"yüksek"}, {en:"different", tr:"farklı"}, 
+            {en:"time", tr:"zaman", img:"https://ibb.co/DDL0fKJZ"}, {en:"year", tr:"yıl", img:"https://ibb.co/vvgDdstZ"}, {en:"people", tr:"insanlar", img:"https://ibb.co/Mk76W5Kn"}, {en:"way", tr:"yol/yöntem", img:"https://ibb.co/JjyQrhph"}, {en:"day", tr:"gün"}, 
+            {en:"man", tr:"adam", img:"https://ibb.co/rRbC4tXw"}, {en:"thing", tr:"şey"}, {en:"woman", tr:"kadın", img:"https://ibb.co/cKR7WvXM"}, {en:"life", tr:"hayat"}, {en:"child", tr:"çocuk"}, 
+            {en:"world", tr:"dünya", img:"https://ibb.co/GfskGpR3"}, {en:"school", tr:"okul", img:"https://ibb.co/nqLRdQBD"}, {en:"state", tr:"durum/eyalet"}, {en:"family", tr:"aile", img:"https://ibb.co/8Dn3GCm5"}, {en:"student", tr:"öğrenci"}, 
+            {en:"group", tr:"grup", img:"https://ibb.co/r2XTtNvh"}, {en:"country", tr:"ülke"}, {en:"problem", tr:"sorun"}, {en:"hand", tr:"el", img:"https://ibb.co/B582nBmq"}, {en:"part", tr:"parça", img:"https://ibb.co/S7Q0YvqV"}, 
+            {en:"place", tr:"yer"}, {en:"case", tr:"durum/vaka"}, {en:"week", tr:"hafta", img:"https://ibb.co/dsy1gSPM"}, {en:"company", tr:"şirket"}, {en:"system", tr:"sistem", img:"https://ibb.co/nsv27hVT"}, 
+            {en:"word", tr:"kelime", img:"https://ibb.co/SX9rDWsx"}, {en:"work", tr:"iş/çalışmak", img:"https://ibb.co/5WRhjpXq"}, {en:"use", tr:"kullanmak"}, {en:"make", tr:"yapmak", img:"https://ibb.co/1G20CcKP"}, {en:"take", tr:"almak", img:"https://ibb.co/Z1ML5R8k"}, 
+            {en:"give", tr:"vermek", img:"https://ibb.co/mVmCmGN5"}, {en:"come", tr:"gelmek", img:"https://ibb.co/DHQgNm3j"}, {en:"look", tr:"bakmak", img:"https://ibb.co/n8cHWhqD"}, {en:"want", tr:"istemek", img:"https://ibb.co/6R8GsYbX"}, {en:"find", tr:"bulmak", img:"https://ibb.co/rGkgCQSy"}, 
+            {en:"tell", tr:"anlatmak", img:"https://ibb.co/3yt03fYJ"}, {en:"ask", tr:"sormak", img:"https://ibb.co/QFkkbtP4"}, {en:"try", tr:"denemek"}, {en:"need", tr:"ihtiyaç duymak"}, {en:"feel", tr:"hissetmek", img:"https://ibb.co/qY8jhhNr"}, 
+            {en:"become", tr:"olmak"}, {en:"leave", tr:"ayrılmak"}, {en:"call", tr:"aramak/çağırmak", img:"https://ibb.co/7xMzLG7W"}, {en:"keep", tr:"tutmak/saklamak"}, {en:"start", tr:"başlamak"}, 
+            {en:"seem", tr:"görünmek"}, {en:"help", tr:"yardım etmek", img:"https://ibb.co/Gf9B3Bmy"}, {en:"talk", tr:"konuşmak", img:"https://ibb.co/qMxdqjmG"}, {en:"turn", tr:"dönmek", img:"https://ibb.co/gMWz81rc"}, {en:"begin", tr:"başlamak"}, 
+            {en:"show", tr:"göstermek"}, {en:"good", tr:"iyi", img:"https://ibb.co/FkFqNTYJ"}, {en:"new", tr:"yeni"}, {en:"first", tr:"birinci", img:"https://ibb.co/fGZDq7Kb"}, {en:"last", tr:"son/geçen", img:"https://ibb.co/jvJFKxgj"}, 
+            {en:"long", tr:"uzun", img:"https://ibb.co/1GfDLn35"}, {en:"great", tr:"harika"}, {en:"little", tr:"küçük/az", img:"https://ibb.co/whyCqj6b"}, {en:"own", tr:"kendi"}, {en:"other", tr:"diğer"}, 
+            {en:"old", tr:"eski/yaşlı", img:"https://ibb.co/dwS1Rx6w"}, {en:"right", tr:"doğru/sağ"}, {en:"big", tr:"büyük"}, {en:"high", tr:"yüksek"}, {en:"different", tr:"farklı"}, 
             {en:"small", tr:"küçük"}, {en:"large", tr:"geniş/büyük"}, {en:"next", tr:"sonraki"}, {en:"early", tr:"erken"}, {en:"young", tr:"genç"}, 
             {en:"important", tr:"önemli"}, {en:"few", tr:"birkaç"}, {en:"public", tr:"halka açık/kamu"}, {en:"bad", tr:"kötü"}, {en:"same", tr:"aynı"}, 
             {en:"able", tr:"yapabilen"}, {en:"very", tr:"çok"}, {en:"often", tr:"sık sık"}, {en:"really", tr:"gerçekten"}, {en:"quickly", tr:"hızlıca"}, 
@@ -91,15 +91,23 @@
             let div = document.createElement('div');
             div.className = 'word-item';
             div.innerHTML = `<span><button class="speaker-btn" onclick="event.stopPropagation(); speak('${item.en}')">🔊</button>${index + 1}. ${item.en} <span class="tr-word">(${item.tr})</span></span>`;
-            div.onclick = () => openPage(item.en);
+            div.onclick = () => openPage(item);
             listDiv.appendChild(div);
         });
 
-        function openPage(word) {
-            document.getElementById('selectedWord').innerText = word;
+        function openPage(item) {
+            document.getElementById('selectedWord').innerText = item.en;
             document.getElementById('page-overlay').style.display = 'block';
-            speak(word);
-            document.getElementById('imageBox').innerHTML = `<img src="https://source.unsplash.com/400x300/?${word}" style="width:100%; border-radius:10px;" alt="${word}">`;
+            speak(item.en);
+            
+            const imageBox = document.getElementById('imageBox');
+            if(item.img) {
+                // ibb linkleri doğrudan img src'de çalışmayabilir, sayfa linki oldukları için 
+                // ancak buraya doğrudan resim URL'si gelirse otomatik gösterir.
+                imageBox.innerHTML = `<img src="${item.img}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;" alt="${item.en}">`;
+            } else {
+                imageBox.innerHTML = `<img src="https://source.unsplash.com/400x300/?${item.en}" style="width:100%; border-radius:10px;" alt="${item.en}">`;
+            }
         }
 
         function closePage() {
