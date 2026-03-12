@@ -3,65 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelime Projesi</title>
+    <title>Kelime Projesi v5.0 - Full Media</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px; }
-        h1 { text-align: center; color: #333; }
-        .list-container { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 5px; }
+        :root {
+            --spot-black: #121212;
+            --spot-grey: #181818;
+            --inner-grey: #282828;
+            --spot-green: #1DB954;
+        }
+
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        
+        .list-container { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
         .word-item { 
-            background: white; padding: 15px; border: 1px solid #ddd; border-radius: 5px;
-            cursor: pointer; font-size: 18px; display: flex; justify-content: space-between; align-items: center;
-            transition: background 0.2s;
+            background: white; padding: 18px; border-radius: 15px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.2s;
         }
-        .word-item:hover { background: #e0f7fa; }
-        .word-item::after { content: "›"; font-size: 24px; color: #aaa; }
-        .speaker-btn {
-            background: #3498db; color: white; border: none; border-radius: 50%;
-            width: 30px; height: 30px; margin-right: 15px; cursor: pointer;
-            font-size: 14px; line-height: 30px; text-align: center; display: inline-block;
-        }
-        .speaker-btn:hover { background: #2980b9; }
+        .word-text { font-size: 17px; font-weight: 600; flex-grow: 1; }
+        .word-tr { font-size: 14px; color: #888; margin-left: 8px; font-weight: 400; }
+        .listen-icon { font-size: 20px; color: var(--spot-green); padding: 5px; cursor: pointer; }
+
         #page-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: white; z-index: 1000; overflow-y: auto;
+            background: var(--spot-black); z-index: 1000; justify-content: center; align-items: center;
+            flex-direction: column;
         }
-        .page-content { padding: 40px; text-align: center; }
-        .back-btn { background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; float: left; }
-        .image-placeholder { 
-            width: 100%; max-width: 400px; height: 300px; background: #eee; 
-            margin: 20px auto; border-radius: 10px; display: flex; 
-            align-items: center; justify-content: center; overflow: hidden; 
+
+        .content-container { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
+
+        .word-header { color: white; text-align: center; margin-bottom: 10px; }
+        .word-header h1 { margin: 0; font-size: 32px; font-weight: 800; display: inline-block; vertical-align: middle; }
+        .word-header span { font-size: 18px; opacity: 0.6; margin-left: 10px; }
+        .header-listen { background: none; border: none; color: white; font-size: 24px; cursor: pointer; margin-left: 10px; vertical-align: middle; }
+
+        .media-row { display: flex; gap: 10px; width: 100%; }
+        .media-box { 
+            flex: 1; height: 150px; background: #333; border-radius: 20px; 
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
         }
-        .play-btn { background: #27ae60; color: white; border: none; padding: 20px 40px; border-radius: 50px; font-size: 20px; cursor: pointer; width: 100%; max-width: 300px; }
-        .tr-word { color: #7f8c8d; font-size: 14px; margin-left: 10px; font-style: italic; }
+        .media-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .spotify-card { 
+            background: var(--spot-grey); border-radius: 35px; padding: 30px; 
+            color: white; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .empty-player-box { height: 180px; background: var(--inner-grey); border-radius: 20px; margin-bottom: 25px; }
+
+        .progress-area { width: 100%; position: relative; margin: 25px 0 15px 0; }
+        .bar-bg { width: 100%; height: 4px; background: #4f4f4f; border-radius: 2px; }
+        .bar-fill { width: 50%; height: 4px; background: white; border-radius: 2px; }
+        .dot { width: 12px; height: 12px; background: white; border-radius: 50%; position: absolute; left: 50%; top: -4px; }
+        .plus-icon { position: absolute; right: 0; top: -35px; font-size: 24px; }
+
+        .btns { display: flex; justify-content: space-between; align-items: center; }
+        .btn-small { background: none; border: none; font-size: 22px; color: #b3b3b3; cursor: pointer; }
+        .play-main { background: white; color: black; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: none; cursor: pointer; }
+
+        .close-x { position: absolute; top: 20px; right: 20px; font-size: 26px; color: #b3b3b3; cursor: pointer; z-index: 1001; }
     </style>
 </head>
 <body>
 
-    <h1>İngilizce Kelime Listesi</h1>
+    <h1 style="text-align:center">İngilizce 100 Kelime</h1>
     <div class="list-container" id="list"></div>
 
     <div id="page-overlay">
-        <div class="page-content">
-            <button class="back-btn" onclick="closePage()">⬅ Geri Dön</button>
-            <h1 id="selectedWord" style="margin-top: 60px; text-transform: capitalize;">Kelime</h1>
-            <div class="image-placeholder" id="imageBox"></div>
-            <button class="play-btn" onclick="playSound()">▶ ŞARKIYI OYNAT</button>
+        <div class="close-x" onclick="closePage()">✕</div>
+        <div class="content-container">
+            <div class="word-header">
+                <h1 id="topWord">WORD</h1>
+                <span id="topTr">(Türkçe)</span>
+                <button class="header-listen" onclick="speakAgain()">🔊</button>
+            </div>
+            <div class="media-row">
+                <div class="media-box" id="resimKutusu"></div>
+                <div class="media-box" id="filmKutusu"></div>
+            </div>
+            <div class="spotify-card">
+                <div class="empty-player-box"></div>
+                <div class="progress-area">
+                    <div class="plus-icon">⊕</div>
+                    <div class="bar-bg"><div class="bar-fill"></div></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="btns">
+                    <button class="btn-small">🔀</button>
+                    <button class="btn-small">⏮</button>
+                    <button class="play-main" onclick="speakAgain()">▶</button>
+                    <button class="btn-small">⏭</button>
+                    <button class="btn-small">🔁</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        function speak(text) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            window.speechSynthesis.speak(utterance);
-        }
-
+        let currentWord = "";
+        
         const wordData = [
             {en:"time", tr:"zaman", img:"https://i.ibb.co/FbnR47rF/MG-20260310-WA0034.jpg"},
             {en:"year", tr:"yıl", img:"https://i.ibb.co/Pz3tWTSw/MG-20260310-WA0035.jpg"},
             {en:"people", tr:"insanlar", img:"https://i.ibb.co/8g9cT4GM/MG-20260310-WA0036.jpg"},
-            {en:"way", tr:"yol/yöntem", img:"https://i.ibb.co/chCL2m8m/MG-20260310-WA0037.jpg"},
+            {en:"way", tr:"yol", img:"https://i.ibb.co/chCL2m8m/MG-20260310-WA0037.jpg"},
             {en:"day", tr:"gün", img:""},
             {en:"man", tr:"adam", img:"https://i.ibb.co/xtmpJsr7/MG-20260310-WA0039.jpg"},
             {en:"thing", tr:"şey", img:""},
@@ -79,12 +123,12 @@
             {en:"hand", tr:"el", img:"https://i.ibb.co/tTypLDS8/MG-20260310-WA0052.jpg"},
             {en:"part", tr:"parça", img:"https://i.ibb.co/VpHDnBXM/MG-20260310-WA0053.jpg"},
             {en:"place", tr:"yer", img:""},
-            {en:"case", tr:"durum/vaka", img:""},
+            {en:"case", tr:"durum", img:""},
             {en:"week", tr:"hafta", img:"https://i.ibb.co/bjnqJxsm/MG-20260310-WA0016.jpg"},
             {en:"company", tr:"şirket", img:""},
             {en:"system", tr:"sistem", img:"https://i.ibb.co/PZnpcBbR/MG-20260310-WA0018.jpg"},
             {en:"word", tr:"kelime", img:"https://i.ibb.co/XZv8fN24/MG-20260310-WA0019.jpg"},
-            {en:"work", tr:"iş/çalışmak", img:"https://i.ibb.co/RpDT6rGL/MG-20260310-WA0020.jpg"},
+            {en:"work", tr:"iş", img:"https://i.ibb.co/RpDT6rGL/MG-20260310-WA0020.jpg"},
             {en:"use", tr:"kullanmak", img:""},
             {en:"make", tr:"yapmak", img:"https://i.ibb.co/m5zRnpt2/MG-20260310-WA0022.jpg"},
             {en:"take", tr:"almak", img:"https://i.ibb.co/jZr6m9M1/MG-20260310-WA0023.jpg"},
@@ -96,15 +140,15 @@
             {en:"tell", tr:"anlatmak", img:"https://i.ibb.co/Lz4CFQhG/MG-20260310-WA0029.jpg"},
             {en:"ask", tr:"sormak", img:"https://i.ibb.co/bgFFWDsk/MG-20260310-WA0030.jpg"},
             {en:"try", tr:"denemek", img:""},
-            {en:"need", tr:"ihtiyaç duymak", img:""},
+            {en:"need", tr:"ihtiyaç", img:""},
             {en:"feel", tr:"hissetmek", img:"https://i.ibb.co/MkHSKKcC/MG-20260310-WA0033.jpg"},
             {en:"become", tr:"olmak", img:""},
             {en:"leave", tr:"ayrılmak", img:""},
-            {en:"call", tr:"aramak/çağırmak", img:"https://i.ibb.co/FkZWCBGw/MG-20260310-WA0013.jpg"},
-            {en:"keep", tr:"tutmak/saklamak", img:""},
+            {en:"call", tr:"aramak", img:"https://i.ibb.co/FkZWCBGw/MG-20260310-WA0013.jpg"},
+            {en:"keep", tr:"tutmak", img:""},
             {en:"start", tr:"başlamak", img:""},
             {en:"seem", tr:"görünmek", img:""},
-            {en:"help", tr:"yardım etmek", img:"https://i.ibb.co/cKwMXMq0/MG-20260310-WA0002.jpg"},
+            {en:"help", tr:"yardım", img:"https://i.ibb.co/cKwMXMq0/MG-20260310-WA0002.jpg"},
             {en:"talk", tr:"konuşmak", img:"https://i.ibb.co/275yVhc2/MG-20260310-WA0003.jpg"},
             {en:"turn", tr:"dönmek", img:""},
             {en:"begin", tr:"başlamak", img:""},
@@ -112,25 +156,25 @@
             {en:"good", tr:"iyi", img:"https://i.ibb.co/TDsqp30R/MG-20260310-WA0005.jpg"},
             {en:"new", tr:"yeni", img:""},
             {en:"first", tr:"birinci", img:"https://i.ibb.co/jZqJbFxd/MG-20260310-WA0006.jpg"},
-            {en:"last", tr:"son/geçen", img:"https://i.ibb.co/mCN7sY6P/MG-20260310-WA0007.jpg"},
+            {en:"last", tr:"son", img:"https://i.ibb.co/mCN7sY6P/MG-20260310-WA0007.jpg"},
             {en:"long", tr:"uzun", img:""},
             {en:"great", tr:"harika", img:""},
-            {en:"little", tr:"küçük/az", img:"https://i.ibb.co/3m1WbQh8/MG-20260310-WA0010.jpg"},
+            {en:"little", tr:"küçük", img:"https://i.ibb.co/3m1WbQh8/MG-20260310-WA0010.jpg"},
             {en:"own", tr:"kendi", img:""},
             {en:"other", tr:"diğer", img:""},
-            {en:"old", tr:"eski/yaşlı", img:"https://i.ibb.co/0Rk8xvZR/MG-20260310-WA0011.jpg"},
-            {en:"right", tr:"doğru/sağ", img:""},
+            {en:"old", tr:"eski", img:"https://i.ibb.co/0Rk8xvZR/MG-20260310-WA0011.jpg"},
+            {en:"right", tr:"doğru", img:""},
             {en:"big", tr:"büyük", img:""},
             {en:"high", tr:"yüksek", img:""},
             {en:"different", tr:"farklı", img:""},
             {en:"small", tr:"küçük", img:""},
-            {en:"large", tr:"geniş/büyük", img:""},
+            {en:"large", tr:"geniş", img:""},
             {en:"next", tr:"sonraki", img:""},
             {en:"early", tr:"erken", img:""},
             {en:"young", tr:"genç", img:""},
             {en:"important", tr:"önemli", img:""},
-            {en:"few", tr:"birkaç", img:""},
-            {en:"public", tr:"halka açık/kamu", img:""},
+            {en:"few", tr:"az", img:""},
+            {en:"public", tr:"halka açık", img:""},
             {en:"bad", tr:"kötü", img:""},
             {en:"same", tr:"aynı", img:""},
             {en:"able", tr:"yapabilen", img:""},
@@ -144,7 +188,7 @@
             {en:"sometimes", tr:"bazen", img:""},
             {en:"usually", tr:"genellikle", img:""},
             {en:"together", tr:"birlikte", img:""},
-            {en:"already", tr:"zaten/çoktan", img:""},
+            {en:"already", tr:"zaten", img:""},
             {en:"almost", tr:"neredeyse", img:""},
             {en:"especially", tr:"özellikle", img:""},
             {en:"probably", tr:"muhtemelen", img:""},
@@ -156,40 +200,49 @@
             {en:"currently", tr:"şu anda", img:""},
             {en:"clearly", tr:"açıkça", img:""},
             {en:"simply", tr:"basitçe", img:""},
-            {en:"exactly", tr:"kesinlikle", img:""},
-            {en:"strongly", tr:"güçlü bir şekilde", img:""}
+            {en:"exactly", tr:"tam olarak", img:""},
+            {en:"strongly", tr:"güçlüce", img:""}
         ];
 
         const listDiv = document.getElementById('list');
-        
         wordData.forEach((item, index) => {
             let div = document.createElement('div');
             div.className = 'word-item';
-            div.innerHTML = `<span><button class="speaker-btn" onclick="event.stopPropagation(); speak('${item.en}')">🔊</button>${index + 1}. ${item.en} <span class="tr-word">(${item.tr})</span></span>`;
-            div.onclick = () => openPage(item);
+            div.innerHTML = `
+                <div class="word-text" onclick='openPage(${JSON.stringify(item)})'>
+                    <b>${index + 1}.</b> ${item.en} <span class="word-tr">${item.tr}</span>
+                </div>
+                <span class="listen-icon" onclick="event.stopPropagation(); speak('${item.en}')">🔊</span>
+            `;
             listDiv.appendChild(div);
         });
 
         function openPage(item) {
-            document.getElementById('selectedWord').innerText = item.en;
-            document.getElementById('page-overlay').style.display = 'block';
-            speak(item.en);
+            currentWord = item.en;
+            document.getElementById('topWord').innerText = item.en.toUpperCase();
+            document.getElementById('topTr').innerText = `(${item.tr})`;
             
-            const imageBox = document.getElementById('imageBox');
-            if(item.img && item.img !== "") {
-                imageBox.innerHTML = `<img src="${item.img}" style="width:100%; height:100%; object-fit:contain; border-radius:10px;" alt="${item.en}">`;
-            } else {
-                imageBox.innerHTML = `<img src="https://source.unsplash.com/400x300/?${item.en}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;" alt="${item.en}">`;
-            }
+            const imgUrl = item.img ? item.img : "https://via.placeholder.com/150?text=Görsel+Bekleniyor";
+            document.getElementById('resimKutusu').innerHTML = `<img src="${imgUrl}">`;
+            document.getElementById('filmKutusu').innerHTML = `<p style="font-size:12px;color:#999;text-align:center">Film Kesiti</p>`;
+            
+            document.getElementById('page-overlay').style.display = 'flex';
+            speak(item.en);
         }
 
         function closePage() {
             document.getElementById('page-overlay').style.display = 'none';
+            window.speechSynthesis.cancel();
         }
-        
-        function playSound() {
-            alert("Şarkı çalma fonksiyonu aktif.");
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
         }
+
+        function speakAgain() { if(currentWord) speak(currentWord); }
     </script>
 </body>
 </html>
