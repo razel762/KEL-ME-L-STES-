@@ -65,7 +65,7 @@
 </head>
 <body>
 
-    <h1 style="text-align:center">Kelime Projesi</h1>
+    <h1 style="text-align:center">İngilizce 100 Kelime</h1>
     <div class="list-container" id="list"></div>
 
     <div id="page-overlay">
@@ -224,7 +224,7 @@
             
             const imgUrl = item.img ? item.img : "https://via.placeholder.com/150?text=Görsel+Bekleniyor";
             document.getElementById('resimKutusu').innerHTML = `<img src="${imgUrl}">`;
-            document.getElementById('filmKutusu').innerHTML = `<p style="font-size:12px;color:#999;text-align:center"BURAYA FİLM EKLENCEK</p>`;
+            document.getElementById('filmKutusu').innerHTML = `<p style="font-size:12px;color:#999;text-align:center">Film Kesiti</p>`;
             
             document.getElementById('page-overlay').style.display = 'flex';
             speak(item.en);
