@@ -1,251 +1,264 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>İngilizce 100 Kelime</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelime Projesi v5.1 - Video Entegreli</title>
+    <style>
+        :root {
+            --spot-black: #121212;
+            --spot-grey: #181818;
+            --inner-grey: #282828;
+            --spot-green: #1DB954;
+        }
 
-<style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        
+        .list-container { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+        .word-item { 
+            background: white; padding: 18px; border-radius: 15px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.2s;
+        }
+        .word-text { font-size: 17px; font-weight: 600; flex-grow: 1; }
+        .word-tr { font-size: 14px; color: #888; margin-left: 8px; font-weight: 400; }
+        .listen-icon { font-size: 20px; color: var(--spot-green); padding: 5px; cursor: pointer; }
 
-body{
-font-family:Segoe UI;
-background:#f0f2f5;
-margin:0;
-padding:20px;
-}
+        #page-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--spot-black); z-index: 1000; justify-content: center; align-items: center;
+            flex-direction: column;
+        }
 
-.list-container{
-max-width:500px;
-margin:auto;
-display:flex;
-flex-direction:column;
-gap:12px;
-}
+        .content-container { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
 
-.word-item{
-background:white;
-padding:18px;
-border-radius:15px;
-cursor:pointer;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 4px 10px rgba(0,0,0,0.05);
-}
+        .word-header { color: white; text-align: center; margin-bottom: 10px; }
+        .word-header h1 { margin: 0; font-size: 32px; font-weight: 800; display: inline-block; vertical-align: middle; }
+        .word-header span { font-size: 18px; opacity: 0.6; margin-left: 10px; }
+        .header-listen { background: none; border: none; color: white; font-size: 24px; cursor: pointer; margin-left: 10px; vertical-align: middle; }
 
-.word-text{
-font-size:17px;
-font-weight:600;
-flex-grow:1;
-}
+        .media-row { display: flex; gap: 10px; width: 100%; }
+        .media-box { 
+            flex: 1; height: 150px; background: #333; border-radius: 20px; 
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+        .media-box img, .media-box video { width: 100%; height: 100%; object-fit: cover; }
 
-.word-tr{
-font-size:14px;
-color:#888;
-margin-left:8px;
-}
+        .spotify-card { 
+            background: var(--spot-grey); border-radius: 35px; padding: 30px; 
+            color: white; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .empty-player-box { height: 180px; background: var(--inner-grey); border-radius: 20px; margin-bottom: 25px; }
 
-.listen-icon{
-font-size:20px;
-color:#1DB954;
-cursor:pointer;
-}
+        .progress-area { width: 100%; position: relative; margin: 25px 0 15px 0; }
+        .bar-bg { width: 100%; height: 4px; background: #4f4f4f; border-radius: 2px; }
+        .bar-fill { width: 50%; height: 4px; background: white; border-radius: 2px; }
+        .dot { width: 12px; height: 12px; background: white; border-radius: 50%; position: absolute; left: 50%; top: -4px; }
+        .plus-icon { position: absolute; right: 0; top: -35px; font-size: 24px; }
 
-#page-overlay{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#121212;
-z-index:1000;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-}
+        .btns { display: flex; justify-content: space-between; align-items: center; }
+        .btn-small { background: none; border: none; font-size: 22px; color: #b3b3b3; cursor: pointer; }
+        .play-main { background: white; color: black; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: none; cursor: pointer; }
 
-.content-container{
-width:90%;
-max-width:400px;
-display:flex;
-flex-direction:column;
-gap:15px;
-}
-
-.word-header{
-color:white;
-text-align:center;
-}
-
-.word-header h1{
-margin:0;
-font-size:32px;
-}
-
-.media-row{
-display:flex;
-gap:10px;
-}
-
-.media-box{
-flex:1;
-height:160px;
-background:#333;
-border-radius:15px;
-overflow:hidden;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.media-box img{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-.media-box video{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-.close-x{
-position:absolute;
-top:20px;
-right:20px;
-font-size:26px;
-color:white;
-cursor:pointer;
-}
-
-</style>
+        .close-x { position: absolute; top: 20px; right: 20px; font-size: 26px; color: #b3b3b3; cursor: pointer; z-index: 1001; }
+    </style>
 </head>
-
 <body>
 
-<h1 style="text-align:center">İngilizce 100 Kelime</h1>
+    <h1 style="text-align:center">İngilizce 100 Kelime</h1>
+    <div class="list-container" id="list"></div>
 
-<div class="list-container" id="list"></div>
+    <div id="page-overlay">
+        <div class="close-x" onclick="closePage()">✕</div>
+        <div class="content-container">
+            <div class="word-header">
+                <h1 id="topWord">WORD</h1>
+                <span id="topTr">(Türkçe)</span>
+                <button class="header-listen" onclick="speakAgain()">🔊</button>
+            </div>
+            <div class="media-row">
+                <div class="media-box" id="resimKutusu"></div>
+                <div class="media-box" id="filmKutusu"></div>
+            </div>
+            <div class="spotify-card">
+                <div class="empty-player-box"></div>
+                <div class="progress-area">
+                    <div class="plus-icon">⊕</div>
+                    <div class="bar-bg"><div class="bar-fill"></div></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="btns">
+                    <button class="btn-small">🔀</button>
+                    <button class="btn-small">⏮</button>
+                    <button class="play-main" onclick="speakAgain()">▶</button>
+                    <button class="btn-small">⏭</button>
+                    <button class="btn-small">🔁</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div id="page-overlay">
+    <script>
+        let currentWord = "";
+        
+        const wordData = [
+            {en:"time", tr:"zaman", img:"https://i.ibb.co/FbnR47rF/MG-20260310-WA0034.jpg", vid:""},
+            {en:"year", tr:"yıl", img:"https://i.ibb.co/Pz3tWTSw/MG-20260310-WA0035.jpg", vid:""},
+            {en:"people", tr:"insanlar", img:"https://i.ibb.co/8g9cT4GM/MG-20260310-WA0036.jpg", vid:""},
+            {en:"way", tr:"yol", img:"https://i.ibb.co/chCL2m8m/MG-20260310-WA0037.jpg", vid:""},
+            {en:"day", tr:"gün", img:"", vid:""},
+            {en:"man", tr:"adam", img:"https://i.ibb.co/xtmpJsr7/MG-20260310-WA0039.jpg", vid:""},
+            {en:"thing", tr:"şey", img:"", vid:""},
+            {en:"woman", tr:"kadın", img:"https://i.ibb.co/PsJf2Yz3/MG-20260310-WA0041.jpg", vid:""},
+            {en:"life", tr:"hayat", img:"", vid:""},
+            {en:"child", tr:"çocuk", img:"", vid:"VID-20260313-WA0028.mp4"},
+            {en:"world", tr:"dünya", img:"https://i.ibb.co/SDQ0HyB7/MG-20260310-WA0044.jpg", vid:""},
+            {en:"school", tr:"okul", img:"https://i.ibb.co/Gf5FYC9V/MG-20260310-WA0045.jpg", vid:""},
+            {en:"state", tr:"durum/eyalet", img:"", vid:""},
+            {en:"family", tr:"aile", img:"https://i.ibb.co/ccK5RByF/MG-20260310-WA0047.jpg", vid:""},
+            {en:"student", tr:"öğrenci", img:"", vid:""},
+            {en:"group", tr:"grup", img:"https://i.ibb.co/v4MgBRDW/MG-20260310-WA0049.jpg", vid:""},
+            {en:"country", tr:"ülke", img:"", vid:""},
+            {en:"problem", tr:"sorun", img:"", vid:""},
+            {en:"hand", tr:"el", img:"https://i.ibb.co/tTypLDS8/MG-20260310-WA0052.jpg", vid:""},
+            {en:"part", tr:"parça", img:"https://i.ibb.co/VpHDnBXM/MG-20260310-WA0053.jpg", vid:""},
+            {en:"place", tr:"yer", img:"", vid:""},
+            {en:"case", tr:"durum", img:"", vid:""},
+            {en:"week", tr:"hafta", img:"https://i.ibb.co/bjnqJxsm/MG-20260310-WA0016.jpg", vid:""},
+            {en:"company", tr:"şirket", img:"", vid:""},
+            {en:"system", tr:"sistem", img:"https://i.ibb.co/PZnpcBbR/MG-20260310-WA0018.jpg", vid:""},
+            {en:"word", tr:"kelime", img:"https://i.ibb.co/XZv8fN24/MG-20260310-WA0019.jpg", vid:""},
+            {en:"work", tr:"iş", img:"https://i.ibb.co/RpDT6rGL/MG-20260310-WA0020.jpg", vid:""},
+            {en:"use", tr:"kullanmak", img:"", vid:""},
+            {en:"make", tr:"yapmak", img:"https://i.ibb.co/m5zRnpt2/MG-20260310-WA0022.jpg", vid:""},
+            {en:"take", tr:"almak", img:"https://i.ibb.co/jZr6m9M1/MG-20260310-WA0023.jpg", vid:""},
+            {en:"give", tr:"vermek", img:"https://i.ibb.co/cSPcP1Yh/MG-20260310-WA0024.jpg", vid:""},
+            {en:"come", tr:"gelmek", img:"https://i.ibb.co/Zpx13vyb/MG-20260310-WA0025.jpg", vid:""},
+            {en:"look", tr:"bakmak", img:"https://i.ibb.co/k68RdYVh/MG-20260310-WA0026.jpg", vid:""},
+            {en:"want", tr:"istemek", img:"https://i.ibb.co/3yvVh1WR/MG-20260310-WA0027.jpg", vid:""},
+            {en:"find", tr:"bulmak", img:"https://i.ibb.co/6RY23yxs/MG-20260310-WA0028.jpg", vid:""},
+            {en:"tell", tr:"anlatmak", img:"https://i.ibb.co/Lz4CFQhG/MG-20260310-WA0029.jpg", vid:""},
+            {en:"ask", tr:"sormak", img:"https://i.ibb.co/bgFFWDsk/MG-20260310-WA0030.jpg", vid:""},
+            {en:"try", tr:"denemek", img:"", vid:""},
+            {en:"need", tr:"ihtiyaç", img:"", vid:""},
+            {en:"feel", tr:"hissetmek", img:"https://i.ibb.co/MkHSKKcC/MG-20260310-WA0033.jpg", vid:""},
+            {en:"become", tr:"olmak", img:"", vid:""},
+            {en:"leave", tr:"ayrılmak", img:"", vid:"VID-20260314-WA0000.mp4"},
+            {en:"call", tr:"aramak", img:"https://i.ibb.co/FkZWCBGw/MG-20260310-WA0013.jpg", vid:"VID-20260313-WA0138.mp4"},
+            {en:"keep", tr:"tutmak", img:"", vid:""},
+            {en:"start", tr:"başlamak", img:"", vid:""},
+            {en:"seem", tr:"görünmek", img:"", vid:""},
+            {en:"help", tr:"yardım", img:"https://i.ibb.co/cKwMXMq0/MG-20260310-WA0002.jpg", vid:""},
+            {en:"talk", tr:"konuşmak", img:"https://i.ibb.co/275yVhc2/MG-20260310-WA0003.jpg", vid:"VID-20260313-WA0139.mp4"},
+            {en:"turn", tr:"dönmek", img:"", vid:""},
+            {en:"begin", tr:"başlamak", img:"", vid:""},
+            {en:"show", tr:"göstermek", img:"", vid:"VID-20260314-WA0001.mp4"},
+            {en:"good", tr:"iyi", img:"https://i.ibb.co/TDsqp30R/MG-20260310-WA0005.jpg", vid:""},
+            {en:"new", tr:"yeni", img:"", vid:""},
+            {en:"first", tr:"birinci", img:"https://i.ibb.co/jZqJbFxd/MG-20260310-WA0006.jpg", vid:""},
+            {en:"last", tr:"son", img:"https://i.ibb.co/mCN7sY6P/MG-20260310-WA0007.jpg", vid:""},
+            {en:"long", tr:"uzun", img:"", vid:""},
+            {en:"great", tr:"harika", img:"", vid:""},
+            {en:"little", tr:"küçük", img:"https://i.ibb.co/3m1WbQh8/MG-20260310-WA0010.jpg", vid:""},
+            {en:"own", tr:"kendi", img:"", vid:""},
+            {en:"other", tr:"diğer", img:"", vid:"VID-20260313-WA0024.mp4"},
+            {en:"old", tr:"eski", img:"https://i.ibb.co/0Rk8xvZR/MG-20260310-WA0011.jpg", vid:""},
+            {en:"right", tr:"doğru", img:"", vid:""},
+            {en:"big", tr:"büyük", img:"", vid:"VID-20260313-WA0023.mp4"},
+            {en:"high", tr:"yüksek", img:"", vid:""},
+            {en:"different", tr:"farklı", img:"", vid:"VID-20260313-WA0034.mp4"},
+            {en:"small", tr:"küçük", img:"", vid:""},
+            {en:"large", tr:"geniş", img:"", vid:""},
+            {en:"next", tr:"sonraki", img:"", vid:""},
+            {en:"early", tr:"erken", img:"", vid:""},
+            {en:"young", tr:"genç", img:"", vid:""},
+            {en:"important", tr:"önemli", img:"", vid:"VID-20260313-WA0026.mp4"},
+            {en:"few", tr:"az", img:"", vid:""},
+            {en:"public", tr:"halka açık", img:"", vid:""},
+            {en:"bad", tr:"kötü", img:"", vid:"VID-20260313-WA0027.mp4"},
+            {en:"same", tr:"aynı", img:"", vid:""},
+            {en:"able", tr:"yapabilen", img:"", vid:""},
+            {en:"very", tr:"çok", img:"", vid:""},
+            {en:"often", tr:"sık sık", img:"", vid:""},
+            {en:"really", tr:"gerçekten", img:"", vid:"VID-20260313-WA0025.mp4"},
+            {en:"quickly", tr:"hızlıca", img:"", vid:""},
+            {en:"slowly", tr:"yavaşça", img:"", vid:""},
+            {en:"well", tr:"iyi", img:"", vid:""},
+            {en:"always", tr:"her zaman", img:"", vid:"VID-20260313-WA0022.mp4"},
+            {en:"sometimes", tr:"bazen", img:"", vid:"VID-20260313-WA0033.mp4"},
+            {en:"usually", tr:"genellikle", img:"", vid:""},
+            {en:"together", tr:"birlikte", img:"", vid:"VID-20260313-WA0029.mp4"},
+            {en:"already", tr:"zaten", img:"", vid:""},
+            {en:"almost", tr:"neredeyse", img:"", vid:""},
+            {en:"especially", tr:"özellikle", img:"", vid:"VID-20260313-WA0035.mp4"},
+            {en:"probably", tr:"muhtemelen", img:"", vid:""},
+            {en:"finally", tr:"sonunda", img:"", vid:"VID-20260313-WA0021.mp4"},
+            {en:"finish", tr:"bitirmek", img:"", vid:"VID-20260313-WA0032.mp4"}, // Finish senin listende vardı
+            {en:"easily", tr:"kolayca", img:"", vid:""},
+            {en:"recently", tr:"son zamanlarda", img:"", vid:""},
+            {en:"immediately", tr:"hemen", img:"", vid:""},
+            {en:"nearly", tr:"neredeyse", img:"", vid:""},
+            {en:"currently", tr:"şu anda", img:"", vid:""},
+            {en:"clearly", tr:"açıkça", img:"", vid:""},
+            {en:"simply", tr:"basitçe", img:"", vid:""},
+            {en:"exactly", tr:"tam olarak", img:"", vid:""},
+            {en:"strongly", tr:"güçlüce", img:"", vid:""}
+        ];
 
-<div class="close-x" onclick="closePage()">✕</div>
+        const listDiv = document.getElementById('list');
+        wordData.forEach((item, index) => {
+            let div = document.createElement('div');
+            div.className = 'word-item';
+            div.innerHTML = `
+                <div class="word-text" onclick='openPage(${JSON.stringify(item)})'>
+                    <b>${index + 1}.</b> ${item.en} <span class="word-tr">${item.tr}</span>
+                </div>
+                <span class="listen-icon" onclick="event.stopPropagation(); speak('${item.en}')">🔊</span>
+            `;
+            listDiv.appendChild(div);
+        });
 
-<div class="content-container">
+        function openPage(item) {
+            currentWord = item.en;
+            document.getElementById('topWord').innerText = item.en.toUpperCase();
+            document.getElementById('topTr').innerText = `(${item.tr})`;
+            
+            const imgUrl = item.img ? item.img : "https://via.placeholder.com/150?text=Görsel+Bekleniyor";
+            document.getElementById('resimKutusu').innerHTML = `<img src="${imgUrl}">`;
+            
+            // Video Alanı Kontrolü
+            if(item.vid) {
+                document.getElementById('filmKutusu').innerHTML = `
+                    <video id="kelimeVideo" width="100%" height="100%" autoplay muted loop>
+                        <source src="videolar/${item.vid}" type="video/mp4">
+                    </video>`;
+                
+                // Video dosyası yoksa/hatalıysa kontrolü
+                const v = document.getElementById('kelimeVideo');
+                v.onerror = () => {
+                    document.getElementById('filmKutusu').innerHTML = `<p style="font-size:12px;color:#999;text-align:center">Film Bulunamadı</p>`;
+                };
+            } else {
+                document.getElementById('filmKutusu').innerHTML = `<p style="font-size:12px;color:#999;text-align:center">Film Kesiti Bekleniyor</p>`;
+            }
+            
+            document.getElementById('page-overlay').style.display = 'flex';
+            speak(item.en);
+        }
 
-<div class="word-header">
-<h1 id="topWord"></h1>
-<span id="topTr"></span>
-</div>
+        function closePage() {
+            document.getElementById('page-overlay').style.display = 'none';
+            window.speechSynthesis.cancel();
+        }
 
-<div class="media-row">
-<div class="media-box" id="resimKutusu"></div>
-<div class="media-box" id="filmKutusu"></div>
-</div>
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
 
-</div>
-</div>
-
-<script>
-
-let currentWord="";
-
-const wordData=[
-
-{en:"show",tr:"göstermek",img:"",video:"VID-20260314-WA0001.mp4"},
-{en:"leave",tr:"ayrılmak",img:"",video:"VID-20260314-WA0000.mp4"},
-{en:"other",tr:"diğer",img:"",video:"VID-20260313-WA0024.mp4"},
-{en:"talk",tr:"konuşmak",img:"https://i.ibb.co/275yVhc2/MG-20260310-WA0003.jpg",video:"VID-20260313-WA0139.mp4"},
-{en:"call",tr:"aramak",img:"https://i.ibb.co/FkZWCBGw/MG-20260310-WA0013.jpg",video:"VID-20260313-WA0138.mp4"},
-{en:"especially",tr:"özellikle",img:"",video:"VID-20260313-WA0035.mp4"},
-{en:"different",tr:"farklı",img:"",video:"VID-20260313-WA0034.mp4"},
-{en:"sometimes",tr:"bazen",img:"",video:"VID-20260313-WA0033.mp4"},
-{en:"together",tr:"birlikte",img:"",video:"VID-20260313-WA0029.mp4"},
-{en:"child",tr:"çocuk",img:"",video:"VID-20260313-WA0028.mp4"},
-{en:"bad",tr:"kötü",img:"",video:"VID-20260313-WA0027.mp4"},
-{en:"important",tr:"önemli",img:"",video:"VID-20260313-WA0026.mp4"},
-{en:"really",tr:"gerçekten",img:"",video:"VID-20260313-WA0025.mp4"},
-{en:"big",tr:"büyük",img:"",video:"VID-20260313-WA0023.mp4"},
-{en:"always",tr:"her zaman",img:"",video:"VID-20260313-WA0022.mp4"},
-{en:"finally",tr:"sonunda",img:"",video:"VID-20260313-WA0021.mp4"}
-
-];
-
-const listDiv=document.getElementById("list");
-
-wordData.forEach((item,index)=>{
-
-let div=document.createElement("div");
-
-div.className="word-item";
-
-div.innerHTML=`
-<div class="word-text" onclick='openPage(${JSON.stringify(item)})'>
-<b>${index+1}.</b> ${item.en} <span class="word-tr">${item.tr}</span>
-</div>
-
-<span class="listen-icon" onclick="event.stopPropagation(); speak('${item.en}')">🔊</span>
-`;
-
-listDiv.appendChild(div);
-
-});
-
-function openPage(item){
-
-currentWord=item.en;
-
-document.getElementById("topWord").innerText=item.en.toUpperCase();
-
-document.getElementById("topTr").innerText="("+item.tr+")";
-
-const imgUrl=item.img?item.img:"https://via.placeholder.com/150";
-
-document.getElementById("resimKutusu").innerHTML=`<img src="${imgUrl}">`;
-
-if(item.video){
-
-document.getElementById("filmKutusu").innerHTML=
-`<video controls>
-<source src="${item.video}" type="video/mp4">
-</video>`;
-
-}else{
-
-document.getElementById("filmKutusu").innerHTML=
-`<p style="color:#aaa;font-size:12px">Video Yok</p>`;
-
-}
-
-document.getElementById("page-overlay").style.display="flex";
-
-speak(item.en);
-
-}
-
-function closePage(){
-
-document.getElementById("page-overlay").style.display="none";
-
-window.speechSynthesis.cancel();
-
-}
-
-function speak(text){
-
-window.speechSynthesis.cancel();
-
-const u=new SpeechSynthesisUtterance(text);
-
-u.lang="en-US";
-
-window.speechSynthesis.speak(u);
-
-}
-
-</script>
-
+        function speakAgain() { if(currentWord) speak(currentWord); }
+    </script>
 </body>
 </html>
