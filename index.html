@@ -3,73 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelime Projesi v5.5 - Ses Kontrollü</title>
+    <title>Kelime Projesi v6.0</title>
     <style>
-        :root {
-            --spot-black: #121212;
-            --spot-grey: #181818;
-            --inner-grey: #282828;
-            --spot-green: #1DB954;
-        }
-
+        :root { --bg-dark: #121212; --card-grey: #181818; --inner-grey: #282828; --main-green: #1DB954; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
-        
         .list-container { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
-        .word-item { 
-            background: white; padding: 18px; border-radius: 15px; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.2s;
-        }
+        .word-item { background: white; padding: 18px; border-radius: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .word-text { font-size: 17px; font-weight: 600; flex-grow: 1; }
         .word-tr { font-size: 14px; color: #888; margin-left: 8px; font-weight: 400; }
-        .listen-icon { font-size: 20px; color: var(--spot-green); padding: 5px; cursor: pointer; }
-
-        #page-overlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--spot-black); z-index: 1000; justify-content: center; align-items: center;
-            flex-direction: column;
-        }
-
+        .listen-icon { font-size: 20px; color: var(--main-green); padding: 5px; cursor: pointer; }
+        #page-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
         .content-container { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
-
         .word-header { color: white; text-align: center; margin-bottom: 10px; }
-        .word-header h1 { margin: 0; font-size: 32px; font-weight: 800; display: inline-block; vertical-align: middle; }
+        .word-header h1 { margin: 0; font-size: 32px; font-weight: 800; display: inline-block; }
         .word-header span { font-size: 18px; opacity: 0.6; margin-left: 10px; }
-        .header-listen { background: none; border: none; color: white; font-size: 24px; cursor: pointer; margin-left: 10px; vertical-align: middle; }
-
         .media-row { display: flex; gap: 10px; width: 100%; }
-        .media-box { 
-            flex: 1; height: 150px; background: #333; border-radius: 20px; 
-            overflow: hidden; display: flex; align-items: center; justify-content: center;
-            position: relative;
-        }
+        .media-box { flex: 1; height: 150px; background: #333; border-radius: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
         .media-box img, .media-box video { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Video Ses Butonu Stili */
-        .vid-mute-btn {
-            position: absolute; bottom: 10px; right: 10px;
-            background: rgba(0,0,0,0.6); color: white; border: none;
-            border-radius: 50%; width: 30px; height: 30px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 16px; z-index: 10;
-        }
-
-        .spotify-card { 
-            background: var(--spot-grey); border-radius: 35px; padding: 30px; 
-            color: white; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .empty-player-box { height: 180px; background: var(--inner-grey); border-radius: 20px; margin-bottom: 25px; }
-
-        .progress-area { width: 100%; position: relative; margin: 25px 0 15px 0; }
+        .video-state-icon { position: absolute; font-size: 40px; color: white; opacity: 0; transition: 0.2s; pointer-events: none; }
+        .spotify-card { background: var(--card-grey); border-radius: 35px; padding: 30px; color: white; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .player-view { height: 180px; background: var(--inner-grey); border-radius: 20px; margin-bottom: 25px; }
+        .progress-bar { width: 100%; position: relative; margin: 25px 0 15px 0; }
         .bar-bg { width: 100%; height: 4px; background: #4f4f4f; border-radius: 2px; }
         .bar-fill { width: 50%; height: 4px; background: white; border-radius: 2px; }
         .dot { width: 12px; height: 12px; background: white; border-radius: 50%; position: absolute; left: 50%; top: -4px; }
-        .plus-icon { position: absolute; right: 0; top: -35px; font-size: 24px; }
-
-        .btns { display: flex; justify-content: space-between; align-items: center; }
-        .btn-small { background: none; border: none; font-size: 22px; color: #b3b3b3; cursor: pointer; }
-        .play-main { background: white; color: black; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: none; cursor: pointer; }
-
+        .controls { display: flex; justify-content: space-between; align-items: center; }
+        .btn-side { background: none; border: none; font-size: 22px; color: #b3b3b3; cursor: pointer; }
+        .btn-main { background: white; color: black; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; border: none; cursor: pointer; }
         .close-x { position: absolute; top: 20px; right: 20px; font-size: 26px; color: #b3b3b3; cursor: pointer; z-index: 1001; }
     </style>
 </head>
@@ -79,37 +39,35 @@
     <div class="list-container" id="list"></div>
 
     <div id="page-overlay">
-        <div class="close-x" onclick="closePage()">✕</div>
+        <div class="close-x" onclick="closeView()">✕</div>
         <div class="content-container">
             <div class="word-header">
-                <h1 id="topWord">WORD</h1>
-                <span id="topTr">(Türkçe)</span>
-                <button class="header-listen" onclick="speakAgain()">🔊</button>
+                <h1 id="txtEn">WORD</h1>
+                <span id="txtTr">(Türkçe)</span>
             </div>
             <div class="media-row">
-                <div class="media-box" id="resimKutusu"></div>
-                <div class="media-box" id="filmKutusu"></div>
+                <div class="media-box" id="boxImg"></div>
+                <div class="media-box" id="boxVid" onclick="controlMedia()"></div>
             </div>
             <div class="spotify-card">
-                <div class="empty-player-box"></div>
-                <div class="progress-area">
-                    <div class="plus-icon">⊕</div>
+                <div class="player-view"></div>
+                <div class="progress-bar">
                     <div class="bar-bg"><div class="bar-fill"></div></div>
                     <div class="dot"></div>
                 </div>
-                <div class="btns">
-                    <button class="btn-small">🔀</button>
-                    <button class="btn-small">⏮</button>
-                    <button class="play-main" onclick="speakAgain()">▶</button>
-                    <button class="btn-small">⏭</button>
-                    <button class="btn-small">🔁</button>
+                <div class="controls">
+                    <button class="btn-side">🔀</button>
+                    <button class="btn-side">⏮</button>
+                    <button id="pBtn" class="btn-main" onclick="playHandler()">▶</button>
+                    <button class="btn-side">⏭</button>
+                    <button class="btn-side">🔁</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let currentWord = "";
+        let activeWord = "";
         
         const wordData = [
             {en:"time", tr:"zaman", img:"https://i.ibb.co/FbnR47rF/MG-20260310-WA0034.jpg", vid:""},
@@ -215,75 +173,69 @@
             {en:"strongly", tr:"güçlüce", img:"", vid:""}
         ];
 
-        const listDiv = document.getElementById('list');
-        wordData.forEach((item, index) => {
-            let div = document.createElement('div');
-            div.className = 'word-item';
-            div.innerHTML = `
-                <div class="word-text" onclick='openPage(${JSON.stringify(item)})'>
-                    <b>${index + 1}.</b> ${item.en} <span class="word-tr">${item.tr}</span>
+        const list = document.getElementById('list');
+        wordData.forEach((w, i) => {
+            let item = document.createElement('div');
+            item.className = 'word-item';
+            item.innerHTML = `
+                <div class="word-text" onclick='openView(${JSON.stringify(w)})'>
+                    <b>${i + 1}.</b> ${w.en} <span class="word-tr">${w.tr}</span>
                 </div>
-                <span class="listen-icon" onclick="event.stopPropagation(); speak('${item.en}')">🔊</span>
+                <span class="listen-icon" onclick="event.stopPropagation(); tts('${w.en}')">🔊</span>
             `;
-            listDiv.appendChild(div);
+            list.appendChild(item);
         });
 
-        function openPage(item) {
-            currentWord = item.en;
-            document.getElementById('topWord').innerText = item.en.toUpperCase();
-            document.getElementById('topTr').innerText = `(${item.tr})`;
-            
-            const imgUrl = item.img ? item.img : "https://via.placeholder.com/150?text=Görsel+Bekleniyor";
-            document.getElementById('resimKutusu').innerHTML = `<img src="${imgUrl}">`;
-            
-            // Video Alanı ve Ses Kontrolü
-            if(item.vid) {
-                document.getElementById('filmKutusu').innerHTML = `
-                    <video id="kelimeVideo" width="100%" height="100%" autoplay loop playsinline>
-                        <source src="videolar/${item.vid}" type="video/mp4">
+        function openView(w) {
+            activeWord = w.en;
+            document.getElementById('txtEn').innerText = w.en.toUpperCase();
+            document.getElementById('txtTr').innerText = `(${w.tr})`;
+            document.getElementById('pBtn').innerText = "⏸";
+            const img = w.img ? w.img : "https://via.placeholder.com/150?text=None";
+            document.getElementById('boxImg').innerHTML = `<img src="${img}">`;
+            if(w.vid) {
+                document.getElementById('boxVid').innerHTML = `
+                    <video id="vPlayer" width="100%" height="100%" autoplay loop playsinline>
+                        <source src="videolar/${w.vid}" type="video/mp4">
                     </video>
-                    <button class="vid-mute-btn" onclick="toggleMute()">🔊</button>`;
-                
-                const v = document.getElementById('kelimeVideo');
-                
-                // Başta sesi açmayı dene (Tarayıcı izin verirse)
-                v.muted = false; 
-
-                v.onerror = () => {
-                    document.getElementById('filmKutusu').innerHTML = `<p style="font-size:12px;color:#999;text-align:center">Film Bulunamadı</p>`;
-                };
+                    <div class="video-state-icon" id="vIcon">▶</div>`;
+                document.getElementById('vPlayer').muted = false;
             } else {
-                document.getElementById('filmKutusu').innerHTML = `<p style="font-size:12px;color:#999;text-align:center">Film Kesiti Bekleniyor</p>`;
+                document.getElementById('boxVid').innerHTML = `<p style="font-size:12px;color:#666">No Clip</p>`;
             }
-            
             document.getElementById('page-overlay').style.display = 'flex';
-            speak(item.en);
+            tts(w.en);
         }
 
-        // Video Sesini Aç/Kapat Fonksiyonu
-        function toggleMute() {
-            const v = document.getElementById('kelimeVideo');
-            const btn = document.querySelector('.vid-mute-btn');
+        function controlMedia() {
+            const v = document.getElementById('vPlayer');
+            const btn = document.getElementById('pBtn');
+            const icon = document.getElementById('vIcon');
             if(v) {
-                v.muted = !v.muted;
-                btn.innerText = v.muted ? "🔇" : "🔊";
+                if (v.paused) {
+                    v.play(); btn.innerText = "⏸";
+                    if(icon) icon.style.opacity = "0";
+                } else {
+                    v.pause(); btn.innerText = "▶";
+                    if(icon) icon.style.opacity = "0.7";
+                }
             }
         }
 
-        function closePage() {
+        function playHandler() { controlMedia(); tts(activeWord); }
+
+        function closeView() {
             document.getElementById('page-overlay').style.display = 'none';
-            document.getElementById('filmKutusu').innerHTML = ''; // Videoyu tamamen durdur
+            document.getElementById('boxVid').innerHTML = '';
             window.speechSynthesis.cancel();
         }
 
-        function speak(text) {
+        function tts(s) {
             window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            window.speechSynthesis.speak(utterance);
+            const u = new SpeechSynthesisUtterance(s);
+            u.lang = 'en-US';
+            window.speechSynthesis.speak(u);
         }
-
-        function speakAgain() { if(currentWord) speak(currentWord); }
     </script>
 </body>
 </html>
