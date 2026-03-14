@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelime Projesi v5.1 - Video Entegreli</title>
+    <title>Kelime Projesi v5.5 - Ses Kontrollü</title>
     <style>
         :root {
             --spot-black: #121212;
@@ -41,8 +41,18 @@
         .media-box { 
             flex: 1; height: 150px; background: #333; border-radius: 20px; 
             overflow: hidden; display: flex; align-items: center; justify-content: center;
+            position: relative;
         }
         .media-box img, .media-box video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Video Ses Butonu Stili */
+        .vid-mute-btn {
+            position: absolute; bottom: 10px; right: 10px;
+            background: rgba(0,0,0,0.6); color: white; border: none;
+            border-radius: 50%; width: 30px; height: 30px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 16px; z-index: 10;
+        }
 
         .spotify-card { 
             background: var(--spot-grey); border-radius: 35px; padding: 30px; 
@@ -193,7 +203,7 @@
             {en:"especially", tr:"özellikle", img:"", vid:"VID-20260313-WA0035.mp4"},
             {en:"probably", tr:"muhtemelen", img:"", vid:""},
             {en:"finally", tr:"sonunda", img:"", vid:"VID-20260313-WA0021.mp4"},
-            {en:"finish", tr:"bitirmek", img:"", vid:"VID-20260313-WA0032.mp4"}, // Finish senin listende vardı
+            {en:"finish", tr:"bitirmek", img:"", vid:"VID-20260313-WA0032.mp4"},
             {en:"easily", tr:"kolayca", img:"", vid:""},
             {en:"recently", tr:"son zamanlarda", img:"", vid:""},
             {en:"immediately", tr:"hemen", img:"", vid:""},
@@ -226,15 +236,19 @@
             const imgUrl = item.img ? item.img : "https://via.placeholder.com/150?text=Görsel+Bekleniyor";
             document.getElementById('resimKutusu').innerHTML = `<img src="${imgUrl}">`;
             
-            // Video Alanı Kontrolü
+            // Video Alanı ve Ses Kontrolü
             if(item.vid) {
                 document.getElementById('filmKutusu').innerHTML = `
-                    <video id="kelimeVideo" width="100%" height="100%" autoplay muted loop>
+                    <video id="kelimeVideo" width="100%" height="100%" autoplay loop playsinline>
                         <source src="videolar/${item.vid}" type="video/mp4">
-                    </video>`;
+                    </video>
+                    <button class="vid-mute-btn" onclick="toggleMute()">🔊</button>`;
                 
-                // Video dosyası yoksa/hatalıysa kontrolü
                 const v = document.getElementById('kelimeVideo');
+                
+                // Başta sesi açmayı dene (Tarayıcı izin verirse)
+                v.muted = false; 
+
                 v.onerror = () => {
                     document.getElementById('filmKutusu').innerHTML = `<p style="font-size:12px;color:#999;text-align:center">Film Bulunamadı</p>`;
                 };
@@ -246,8 +260,19 @@
             speak(item.en);
         }
 
+        // Video Sesini Aç/Kapat Fonksiyonu
+        function toggleMute() {
+            const v = document.getElementById('kelimeVideo');
+            const btn = document.querySelector('.vid-mute-btn');
+            if(v) {
+                v.muted = !v.muted;
+                btn.innerText = v.muted ? "🔇" : "🔊";
+            }
+        }
+
         function closePage() {
             document.getElementById('page-overlay').style.display = 'none';
+            document.getElementById('filmKutusu').innerHTML = ''; // Videoyu tamamen durdur
             window.speechSynthesis.cancel();
         }
 
